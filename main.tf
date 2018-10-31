@@ -2,12 +2,6 @@ locals {
   name_prefix = "${var.general["name"]}-${var.general["env"]}"
 }
 
-provider "google-beta" {
-  credentials = "${file("${var.gcp_credentials_file}")}"
-  project     = "${var.project_id}"
-  region      = "${var.region}"
-}
-
 # This data source fetches the project name, and provides the appropriate URLs to use for container registry for this project.
 # https://www.terraform.io/docs/providers/google/d/google_container_registry_repository.html
 data "google_container_registry_repository" "registry" {}
