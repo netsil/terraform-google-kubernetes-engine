@@ -53,8 +53,10 @@ resource "google_container_node_pool" "new_container_cluster_node_pool" {
 resource "google_container_cluster" "new_container_cluster" {
   name        = "${local.name_prefix}-${var.general["zone"]}-master"
   description = "Kubernetes ${var.general["name"]} in ${var.general["zone"]}"
-  zone        = "${var.general["zone"]}"
-  # region - Conflict zone
+
+  # Using region instead of zone
+  # zone        = "${var.general["zone"]}"
+  region        = "${var.general["region"]}"
 
   network                  = "${lookup(var.master, "network", "default")}"
   subnetwork               = "${lookup(var.master, "subnetwork", "default")}"
