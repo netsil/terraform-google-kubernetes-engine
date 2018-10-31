@@ -4,17 +4,21 @@ locals {
 
 # This data source fetches the project name, and provides the appropriate URLs to use for container registry for this project.
 # https://www.terraform.io/docs/providers/google/d/google_container_registry_repository.html
-data "google_container_registry_repository" "registry" {}
+data "google_container_registry_repository" "registry" {
+  project = "${var.project_id}"
+}
 
 # Provides access to available Google Container Engine versions in a zone for a given project.
 # https://www.terraform.io/docs/providers/google/d/google_container_engine_versions.html
 data "google_container_engine_versions" "region" {
+  project = "${var.project_id}"
   zone = "${var.general["zone"]}"
 }
 
 # Manages a Node Pool resource within GKE
 # https://www.terraform.io/docs/providers/google/r/container_node_pool.html
 resource "google_container_node_pool" "new_container_cluster_node_pool" {
+  provider = "google-beta"
   count = "${length(var.node_pool)}"
 
   name       = "${local.name_prefix}-${var.general["zone"]}-pool-${count.index}"
