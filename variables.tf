@@ -108,3 +108,28 @@ variable "ip_allocation_policy" {
   default     = []
   description = "Configuration for cluster IP allocation. As of now, only pre-allocated subnetworks (custom type with secondary ranges) are supported"
 }
+
+variable "master_authorized_cidr_name" {
+  type        = "string"
+  default     = "My Authorized CIDR Block"
+  description = "Authorized CIDR block name"
+}
+
+
+variable "master_authorized_cidr_block" {
+  type        = "string"
+  default     = ""
+  description = "Authorized CIDR block"
+}
+
+variable "enable_private_nodes" {
+  type  = "string"
+  default = true
+  description = "Whether nodes have internal IP addresses only"
+}
+
+variable "master_ipv4_cidr_block" {
+  type        = "string"
+  default     = ""
+  description = "Authorized CIDR block"
+}
