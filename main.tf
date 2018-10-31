@@ -134,4 +134,8 @@ resource "google_container_cluster" "new_container_cluster" {
     tags            = "${var.tags}"
     metadata        = "${var.metadata}"
   }
+
+  lifecycle = {
+    ignore_changes = ["node_pool"]
+  }
 }
