@@ -2,6 +2,12 @@ locals {
   name_prefix = "${var.general["name"]}-${var.general["env"]}"
 }
 
+provider "google-beta" {
+  credentials = "${file("${var.gcp_credentials_file}")}"
+  project     = "${var.project_id}"
+  region      = "${var.region}"
+}
+
 # This data source fetches the project name, and provides the appropriate URLs to use for container registry for this project.
 # https://www.terraform.io/docs/providers/google/d/google_container_registry_repository.html
 data "google_container_registry_repository" "registry" {}
@@ -18,7 +24,8 @@ resource "google_container_node_pool" "new_container_cluster_node_pool" {
   count = "${length(var.node_pool)}"
 
   name       = "${local.name_prefix}-${var.general["zone"]}-pool-${count.index}"
-  zone       = "${var.general["zone"]}"
+  #zone       = "${var.general["zone"]}"
+  region     = "${var.general["region"]}"
   node_count = "${lookup(var.node_pool[count.index], "node_count", 3)}"
   cluster    = "${google_container_cluster.new_container_cluster.name}"
 
@@ -51,6 +58,7 @@ resource "google_container_node_pool" "new_container_cluster_node_pool" {
 # Creates a Google Kubernetes Engine (GKE) cluster
 # https://www.terraform.io/docs/providers/google/r/container_cluster.html
 resource "google_container_cluster" "new_container_cluster" {
+  provider = "google-beta"
   name        = "${local.name_prefix}-${var.general["zone"]}-master"
   description = "Kubernetes ${var.general["name"]} in ${var.general["zone"]}"
 
