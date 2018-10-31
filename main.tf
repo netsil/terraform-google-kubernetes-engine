@@ -91,7 +91,12 @@ resource "google_container_cluster" "new_container_cluster" {
   # cluster_ipv4_cidr - default 
   enable_kubernetes_alpha = "${lookup(var.master, "enable_kubernetes_alpha", false)}"
   enable_legacy_abac      = "${lookup(var.master, "enable_legacy_abac", false)}"
-  ip_allocation_policy    = "${var.ip_allocation_policy}"
+
+  ip_allocation_policy {
+    cluster_secondary_range_name  = "${var.cluster_secondary_range_name}"
+    services_secondary_range_name = "${var.services_secondary_range_name}"
+  }
+
   
   maintenance_policy {
     daily_maintenance_window {
