@@ -47,10 +47,10 @@ resource "google_container_node_pool" "new_container_cluster_node_pool" {
     auto_upgrade = "${lookup(var.node_pool[count.index], "auto_upgrade", true)}"
   }
   
-  node_version       = "${lookup(var.master, "version", data.google_container_engine_versions.region.latest_node_version)}"
+  version       = "${lookup(var.master, "version", data.google_container_engine_versions.region.latest_node_version)}"
 
   lifecycle {
-    "ignore_changes" = ["node_version"]
+    "ignore_changes" = ["version"]
   }
 }
 
