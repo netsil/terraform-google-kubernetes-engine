@@ -133,3 +133,9 @@ variable "master_ipv4_cidr_block" {
   default     = ""
   description = "Authorized CIDR block"
 }
+
+variabe "project" {
+  type = "string"
+  default = ""
+  description = "The GCP project"
+}

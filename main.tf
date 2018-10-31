@@ -5,13 +5,13 @@ locals {
 # This data source fetches the project name, and provides the appropriate URLs to use for container registry for this project.
 # https://www.terraform.io/docs/providers/google/d/google_container_registry_repository.html
 data "google_container_registry_repository" "registry" {
-  project = "${var.project_id}"
+  project = "${var.project}"
 }
 
 # Provides access to available Google Container Engine versions in a zone for a given project.
 # https://www.terraform.io/docs/providers/google/d/google_container_engine_versions.html
 data "google_container_engine_versions" "region" {
-  project = "${var.project_id}"
+  project = "${var.project}"
   zone = "${var.general["zone"]}"
 }
 
