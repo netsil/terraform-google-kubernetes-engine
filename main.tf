@@ -46,6 +46,12 @@ resource "google_container_node_pool" "new_container_cluster_node_pool" {
     auto_repair  = "${lookup(var.node_pool[count.index], "auto_repair", true)}"
     auto_upgrade = "${lookup(var.node_pool[count.index], "auto_upgrade", true)}"
   }
+  
+  node_version       = "${lookup(var.master, "version", data.google_container_engine_versions.region.latest_node_version)}"
+
+  lifecycle {
+    "ignore_changes" = ["node_version"]
+  }
 }
 
 # Creates a Google Kubernetes Engine (GKE) cluster
@@ -117,5 +123,8 @@ resource "google_container_cluster" "new_container_cluster" {
     labels          = "${var.labels}"
     tags            = "${var.tags}"
     metadata        = "${var.metadata}"
+  }
+  lifecycle {
+    "ignore_changes" = ["node_version"]
   }
 }
