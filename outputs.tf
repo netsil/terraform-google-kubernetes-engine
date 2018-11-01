@@ -4,7 +4,7 @@ output "master_version" {
 }
 
 output "endpoint" {
-  value       = "${google_container_cluster.new_container_cluster.endpoint}"
+  value       = "${google_container_cluster.new_container_cluster.*.endpoint}"
   description = "The IP address of this cluster's Kubernetes master"
 }
 
