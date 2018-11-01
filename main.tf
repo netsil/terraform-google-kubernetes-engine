@@ -12,7 +12,7 @@ data "google_container_registry_repository" "registry" {
 # https://www.terraform.io/docs/providers/google/d/google_container_engine_versions.html
 data "google_container_engine_versions" "region" {
   project = "${var.project}"
-  zone = "${var.general["zone"]}"
+  region = "${var.general["region"]}"
 }
 
 # Manages a Node Pool resource within GKE
@@ -125,7 +125,6 @@ resource "google_container_cluster" "new_container_cluster" {
   
   private_cluster_config = {
     enable_private_nodes   = "${var.enable_private_nodes}"
-    master_ipv4_cidr_block = "${var.master_ipv4_cidr_block}"
   }
 
   node_config {
