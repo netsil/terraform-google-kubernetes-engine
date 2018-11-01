@@ -1,3 +1,3 @@
 data "google_compute_zones" "available" {
-	region = "${var.region}"
+    region = "${var.region}"
 }
