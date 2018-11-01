@@ -113,8 +113,8 @@ resource "google_container_cluster" "new_container_cluster" {
         display_name = "${var.master_authorized_cidr_name}"
       }
     ]
-
   }
+
   min_master_version = "${lookup(var.master, "version", data.google_container_engine_versions.region.latest_master_version)}"
   node_version       = "${lookup(var.master, "version", data.google_container_engine_versions.region.latest_node_version)}"
   monitoring_service = "${lookup(var.master, "monitoring_service", "none")}"
@@ -122,6 +122,7 @@ resource "google_container_cluster" "new_container_cluster" {
   
   private_cluster_config = {
     enable_private_nodes   = "${var.enable_private_nodes}"
+    master_ipv4_cidr_block = "10.50.0.0/24"
   }
 
   node_config {
