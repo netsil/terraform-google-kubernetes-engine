@@ -134,11 +134,11 @@ variable "master_ipv4_cidr_block" {
   description = "Authorized CIDR block"
 }
 
-variable "project" {
-  type = "string"
-  default = ""
-  description = "The GCP project"
-}
+#variable "project" {
+#  type = "string"
+#  default = ""
+#  description = "The GCP project"
+#}
 
 variable "cluster_secondary_range_name" {}
 variable "services_secondary_range_name" {}
