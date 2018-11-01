@@ -17,7 +17,7 @@ data "google_container_engine_versions" "region" {
 
 data "google_compute_zones" "available" {
     project = "${var.project}"
-    region = "${var.region}"
+    region = "${var.general["region"]}"
 }
 
 # Manages a Node Pool resource within GKE
