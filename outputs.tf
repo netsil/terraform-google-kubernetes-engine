@@ -13,8 +13,8 @@ output "instance_group_urls" {
   description = "List of instance group URLs which have been assigned to the cluster"
 }
 
-output "node_pools_instance_group_urls" {
-  value       = "${google_container_cluster.new_container_cluster_node_pools.*.instance_group_urls}"
+output "node_pool_instance_group_urls" {
+  value       = "${google_container_cluster.new_container_cluster_node_pool.*.instance_group_urls}"
   description = "List of instance group URLs which have been assigned to the cluster"
 }
 
