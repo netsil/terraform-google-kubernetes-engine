@@ -124,7 +124,7 @@ variable "master_authorized_cidr_block" {
 
 variable "enable_private_nodes" {
   type  = "string"
-  default = true
+  default = "true"
   description = "Whether nodes have internal IP addresses only"
 }
 
