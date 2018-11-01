@@ -21,7 +21,7 @@ resource "google_container_node_pool" "new_container_cluster_node_pool" {
   provider = "google-beta"
   count = "${length(var.node_pool)}"
 
-  name       = "${local.name_prefix}-${var.general["zone"]}-pool-${count.index}"
+  name       = "${local.name_prefix}-${var.general["region"]}-pool-${count.index}"
   #zone       = "${var.general["zone"]}"
   region     = "${var.general["region"]}"
   node_count = "${lookup(var.node_pool[count.index], "node_count", 3)}"
@@ -61,8 +61,8 @@ resource "google_container_node_pool" "new_container_cluster_node_pool" {
 # https://www.terraform.io/docs/providers/google/r/container_cluster.html
 resource "google_container_cluster" "new_container_cluster" {
   provider = "google-beta"
-  name        = "${local.name_prefix}-${var.general["zone"]}-master"
-  description = "Kubernetes ${var.general["name"]} in ${var.general["zone"]}"
+  name        = "${local.name_prefix}-${var.general["region"]}-master"
+  description = "Kubernetes ${var.general["name"]} in ${var.general["region"]}"
 
   # Using region instead of zone
   # zone        = "${var.general["zone"]}"
@@ -70,7 +70,7 @@ resource "google_container_cluster" "new_container_cluster" {
 
   network                  = "${lookup(var.master, "network", "default")}"
   subnetwork               = "${lookup(var.master, "subnetwork", "default")}"
-  additional_zones         = ["${var.node_additional_zones}"]
+  # additional_zones         = ["${var.node_additional_zones}"]
   initial_node_count       = "${lookup(var.default_node_pool, "node_count", 2)}"
   remove_default_node_pool = "${lookup(var.default_node_pool, "remove", false)}"
   
