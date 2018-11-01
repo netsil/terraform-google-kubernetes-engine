@@ -13,6 +13,10 @@ output "instance_group_urls" {
   description = "List of instance group URLs which have been assigned to the cluster"
 }
 
+output "node_pools_instance_group_urls" {
+  value       = "${google_container_cluster.new_container_cluster_node_pools.*.instance_group_urls}"
+  description = "List of instance group URLs which have been assigned to the cluster"
+
 output "maintenance_window" {
   value       = "${google_container_cluster.new_container_cluster.maintenance_policy.0.daily_maintenance_window.0.duration}"
   description = "Duration of the time window, automatically chosen to be smallest possible in the given scenario. Duration will be in RFC3339 format PTnHnMnS"
