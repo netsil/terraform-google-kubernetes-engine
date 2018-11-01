@@ -15,6 +15,11 @@ data "google_container_engine_versions" "region" {
   region = "${var.general["region"]}"
 }
 
+data "google_compute_zones" "available" {
+    project = "${var.project}"
+    region = "${var.region}"
+}
+
 # Manages a Node Pool resource within GKE
 # https://www.terraform.io/docs/providers/google/r/container_node_pool.html
 resource "google_container_node_pool" "new_container_cluster_node_pool" {
