@@ -120,6 +120,7 @@ resource "google_container_cluster" "new_container_cluster" {
   monitoring_service = "${lookup(var.master, "monitoring_service", "none")}"
   logging_service    = "${lookup(var.master, "logging_service", "logging.googleapis.com")}"
   
+  private_cluster    = "true"
   private_cluster_config = {
     enable_private_nodes   = "${var.enable_private_nodes}"
   }
