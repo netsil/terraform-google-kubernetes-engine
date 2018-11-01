@@ -51,6 +51,10 @@ resource "google_container_node_pool" "new_container_cluster_node_pool" {
     auto_repair  = "${lookup(var.node_pool[count.index], "auto_repair", true)}"
     auto_upgrade = "${lookup(var.node_pool[count.index], "auto_upgrade", true)}"
   }
+
+  lifecycle {
+    "ignore_changes" = ["version"]
+  }
 }
 
 # Creates a Google Kubernetes Engine (GKE) cluster
@@ -146,7 +150,7 @@ resource "google_container_cluster" "new_container_cluster" {
     metadata        = "${var.metadata}"
   }
 
-  lifecycle = {
-    ignore_changes = ["node_pool"]
+  lifecycle {
+    "ignore_changes" = ["node_version"]
   }
 }
