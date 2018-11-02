@@ -16,12 +16,12 @@ data "google_container_engine_versions" "region" {
 # https://www.terraform.io/docs/providers/google/r/container_node_pool.html
 resource "google_container_node_pool" "new_container_cluster_node_pool" {
   provider = "google-beta"
-  count = "${var.node_pool_count}"
+  node_count = "${var.node_pool_count}"
 
   name       = "${local.name_prefix}-${var.general["region"]}-pool-${count.index}"
   #zone       = "${var.general["zone"]}"
   region     = "${var.general["region"]}"
-  node_count = "${lookup(var.node_pool[count.index], "node_count", 3)}"
+  #node_count = "${lookup(var.node_pool[count.index], "node_count", 3)}"
   cluster    = "${google_container_cluster.new_container_cluster.name}"
 
   node_config {
