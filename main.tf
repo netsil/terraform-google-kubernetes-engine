@@ -1,5 +1,5 @@
 locals {
-  name_prefix = "${var.general["name"]}-${var.general["env"]}"
+  name_prefix = "${var.general["name"]}"
 }
 
 # This data source fetches the project name, and provides the appropriate URLs to use for container registry for this project.
