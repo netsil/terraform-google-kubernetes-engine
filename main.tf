@@ -37,10 +37,10 @@ resource "google_container_node_pool" "new_container_cluster_node_pool" {
     metadata        = "${var.metadata}"
   }
 
-  autoscaling {
-    min_node_count = "${lookup(var.default_node_pool, "min_node_count", 2)}"
-    max_node_count = "${lookup(var.default_node_pool, "max_node_count", 3)}"
-  }
+  #autoscaling {
+  #  min_node_count = "${lookup(var.default_node_pool, "min_node_count", 2)}"
+  #  max_node_count = "${lookup(var.default_node_pool, "max_node_count", 3)}"
+  #}
 
   management {
     auto_repair  = "${lookup(var.default_node_pool, "auto_repair", true)}"
