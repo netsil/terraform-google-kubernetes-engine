@@ -144,4 +144,3 @@ variable "cluster_secondary_range_name" {}
 variable "services_secondary_range_name" {}
 variable "node_pool_count" {}
 
-variable "enable_node_pool" {}
