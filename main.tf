@@ -18,10 +18,11 @@ resource "google_container_node_pool" "new_container_cluster_node_pool" {
   provider = "google-beta"
   node_count = "${var.node_pool_count}"
 
+  # We can create a 3-node cluster by setting this to 0 and module will only use default node pool
+  count      = "${var.enable_node_pool == "yes" ? 1 : 0}"
+
   name       = "${local.name_prefix}-${var.general["region"]}-pool-${count.index}"
-  #zone       = "${var.general["zone"]}"
   region     = "${var.general["region"]}"
-  #node_count = "${lookup(var.node_pool[count.index], "node_count", 3)}"
   cluster    = "${google_container_cluster.new_container_cluster.name}"
 
   node_config {
