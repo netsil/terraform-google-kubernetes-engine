@@ -102,6 +102,11 @@ resource "google_container_cluster" "new_container_cluster" {
       start_time = "${lookup(var.master, "maintenance_window", "04:30")}"
     }
   }
+  # master auth -- this will disable basic authentication and use the proper kind
+  master_auth {
+    username = ""
+    password = ""
+  }
   
   # master_authorized_networks_config - disable (security)
   master_authorized_networks_config {
