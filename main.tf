@@ -16,35 +16,35 @@ data "google_container_engine_versions" "region" {
 # https://www.terraform.io/docs/providers/google/r/container_node_pool.html
 resource "google_container_node_pool" "new_container_cluster_node_pool" {
   provider = "google-beta"
-  node_count = "${var.node_pool_count}"
+  node_count = "${lookup(var.node_pool, "node_count", 10)}"
 
   name       = "${local.name_prefix}-${var.general["region"]}-pool-${count.index}"
   region     = "${var.general["region"]}"
   cluster    = "${google_container_cluster.new_container_cluster.name}"
 
   node_config {
-    disk_size_gb    = "${lookup(var.default_node_pool, "disk_size_gb", 10)}"
-    disk_type       = "${lookup(var.default_node_pool, "disk_type", "pd-standard")}"
-    image_type      = "${lookup(var.default_node_pool, "image", "COS")}"
-    local_ssd_count = "${lookup(var.default_node_pool, "local_ssd_count", 0)}"
-    machine_type    = "${lookup(var.default_node_pool, "machine_type", "n1-standard-1")}"
+    disk_size_gb    = "${lookup(var.node_pool, "disk_size_gb", 10)}"
+    disk_type       = "${lookup(var.node_pool, "disk_type", "pd-standard")}"
+    image_type      = "${lookup(var.node_pool, "image", "COS")}"
+    local_ssd_count = "${lookup(var.node_pool, "local_ssd_count", 0)}"
+    machine_type    = "${lookup(var.node_pool, "machine_type", "n1-standard-1")}"
 
-    oauth_scopes    = "${split(",", lookup(var.default_node_pool, "oauth_scopes", "https://www.googleapis.com/auth/compute,https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring"))}"
-    preemptible     = "${lookup(var.default_node_pool, "preemptible", false)}"
-    service_account = "${lookup(var.default_node_pool, "service_account", "default")}"
+    oauth_scopes    = "${split(",", lookup(var.node_pool, "oauth_scopes", "https://www.googleapis.com/auth/compute,https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring"))}"
+    preemptible     = "${lookup(var.node_pool, "preemptible", false)}"
+    service_account = "${lookup(var.node_pool, "service_account", "default")}"
     labels          = "${var.labels}"
     tags            = "${var.tags}"
     metadata        = "${var.metadata}"
   }
 
   #autoscaling {
-  #  min_node_count = "${lookup(var.default_node_pool, "min_node_count", 2)}"
-  #  max_node_count = "${lookup(var.default_node_pool, "max_node_count", 3)}"
+  #  min_node_count = "${lookup(var.node_pool, "min_node_count", 2)}"
+  #  max_node_count = "${lookup(var.node_pool, "max_node_count", 3)}"
   #}
 
   management {
-    auto_repair  = "${lookup(var.default_node_pool, "auto_repair", true)}"
-    auto_upgrade = "${lookup(var.default_node_pool, "auto_upgrade", true)}"
+    auto_repair  = "${lookup(var.node_pool, "auto_repair", true)}"
+    auto_upgrade = "${lookup(var.node_pool, "auto_upgrade", true)}"
   }
 
   lifecycle {
