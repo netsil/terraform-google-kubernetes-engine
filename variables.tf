@@ -65,8 +65,8 @@ variable "default_node_pool" {
 # auto_upgrade (default: true)
 # metadata (default: {})
 variable "node_pool" {
-  type        = "list"
-  default     = []
+  type        = "map"
+  default     = {}
   description = "Node pool setting to create"
 }
 
