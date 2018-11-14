@@ -23,7 +23,8 @@ resource "google_container_node_pool" "new_container_cluster_node_pool" {
   cluster    = "${google_container_cluster.new_container_cluster.name}"
 
   node_config {
-    disk_size_gb    = "${lookup(var.node_pool, "disk_size_gb", 10)}"
+    #disk_size_gb    = "${lookup(var.node_pool, "disk_size_gb", 10)}"
+    disk_size_gb    = "200"
     disk_type       = "${lookup(var.node_pool, "disk_type", "pd-standard")}"
     image_type      = "${lookup(var.node_pool, "image", "COS")}"
     local_ssd_count = "${lookup(var.node_pool, "local_ssd_count", 0)}"
