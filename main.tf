@@ -23,8 +23,7 @@ resource "google_container_node_pool" "new_container_cluster_node_pool" {
   cluster    = "${google_container_cluster.new_container_cluster.name}"
 
   node_config {
-    #disk_size_gb    = "${lookup(var.node_pool, "disk_size_gb", 10)}"
-    disk_size_gb    = "200"
+    disk_size_gb    = "${lookup(var.node_pool, "disk_size_gb", 10)}"
     disk_type       = "${lookup(var.node_pool, "disk_type", "pd-standard")}"
     image_type      = "${lookup(var.node_pool, "image", "COS")}"
     local_ssd_count = "${lookup(var.node_pool, "local_ssd_count", 0)}"
@@ -130,11 +129,11 @@ resource "google_container_cluster" "new_container_cluster" {
   }
 
   node_config {
-    disk_size_gb    = "${lookup(var.default_node_pool, "disk_size_gb", 10)}"
-    disk_type       = "${lookup(var.default_node_pool, "disk_type", "pd-standard")}"
-    image_type      = "${lookup(var.default_node_pool, "image", "COS")}"
-    local_ssd_count = "${lookup(var.default_node_pool, "local_ssd_count", 0)}"
-    machine_type    = "${lookup(var.default_node_pool, "machine_type", "n1-standard-1")}"
+    disk_size_gb    = "${lookup(var.node_pool, "disk_size_gb", 10)}"
+    disk_type       = "${lookup(var.node_pool, "disk_type", "pd-standard")}"
+    image_type      = "${lookup(var.node_pool, "image", "COS")}"
+    local_ssd_count = "${lookup(var.node_pool, "local_ssd_count", 0)}"
+    machine_type    = "${lookup(var.node_pool, "machine_type", "n1-standard-1")}"
     # min_cpu_platform - disable (useless)
 
     # BUG Provider - recreate loop
@@ -143,9 +142,9 @@ resource "google_container_cluster" "new_container_cluster" {
     #   type  = "${lookup(var.master, "gpus_type", "nvidia-tesla-k80")}"
     # }
 
-    oauth_scopes    = ["${split(",", lookup(var.default_node_pool, "oauth_scopes", "https://www.googleapis.com/auth/compute,https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring"))}"]
-    preemptible     = "${lookup(var.default_node_pool, "preemptible", false)}"
-    service_account = "${lookup(var.default_node_pool, "service_account", "default")}"
+    oauth_scopes    = ["${split(",", lookup(var.node_pool, "oauth_scopes", "https://www.googleapis.com/auth/compute,https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring"))}"]
+    preemptible     = "${lookup(var.node_pool, "preemptible", false)}"
+    service_account = "${lookup(var.node_pool, "service_account", "default")}"
     labels          = "${var.labels}"
     tags            = "${var.tags}"
     metadata        = "${var.metadata}"
