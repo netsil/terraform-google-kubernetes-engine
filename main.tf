@@ -120,7 +120,7 @@ resource "google_container_cluster" "new_container_cluster" {
 
   min_master_version = "${lookup(var.master, "version", data.google_container_engine_versions.region.latest_master_version)}"
   node_version       = "${lookup(var.master, "version", data.google_container_engine_versions.region.latest_node_version)}"
-  monitoring_service = "${lookup(var.master, "monitoring_service", "none")}"
+  monitoring_service = "${lookup(var.master, "monitoring_service", "monitoring.googleapis.com")}"
   logging_service    = "${lookup(var.master, "logging_service", "logging.googleapis.com")}"
   
   private_cluster_config = {
