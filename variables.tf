@@ -33,7 +33,7 @@ variable "general" {
 variable "master" {
   type        = "map"
   description = "Kubernetes master parameters to initialize"
-  disable_kubernetes_dashboard = "true"
+  disable_kubernetes_dashboard = true
 }
 
 # Parameters authorized:
