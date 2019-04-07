@@ -143,3 +143,5 @@ variable "master_ipv4_cidr_block" {
 
 variable "cluster_secondary_range_name" {}
 variable "services_secondary_range_name" {}
+variable "env"
+variable "cluster_key"
