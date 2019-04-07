@@ -80,7 +80,7 @@ resource "google_container_cluster" "new_container_cluster" {
     }
 
     kubernetes_dashboard {
-      disabled = "${lookup(var.master, "disable_kubernetes_dashboard", false)}"
+      disabled = "${lookup(var.master, "disable_kubernetes_dashboard", true)}"
     }
 
     network_policy_config {
