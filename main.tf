@@ -23,10 +23,6 @@ resource "google_container_node_pool" "new_container_cluster_node_pool" {
   region     = "${var.general["region"]}"
   cluster    = "${google_container_cluster.new_container_cluster.name}"
   version    = "${lookup(var.node_pool[count.index], "node_version")}"
-  resource_labels =  {
-    env         = "${var.env}"
-    cluster_key = "${var.cluster_key}"
-  }
   node_config {
     disk_size_gb    = "${lookup(var.node_pool[count.index], "disk_size_gb", 10)}"
     disk_type       = "${lookup(var.node_pool[count.index], "disk_type", "pd-standard")}"
@@ -73,7 +69,10 @@ resource "google_container_cluster" "new_container_cluster" {
   # additional_zones         = ["${var.node_additional_zones}"]
   initial_node_count       = "${lookup(var.default_node_pool, "node_count", 2)}"
   remove_default_node_pool = "${lookup(var.default_node_pool, "remove", false)}"
-  
+  resource_labels =  {
+    env         = "${var.env}"
+    cluster_key = "${var.cluster_key}"
+  }  
   addons_config {
     horizontal_pod_autoscaling {
       disabled = "${lookup(var.master, "disable_horizontal_pod_autoscaling", false)}"
