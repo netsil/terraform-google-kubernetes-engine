@@ -65,8 +65,8 @@ variable "default_node_pool" {
 # auto_upgrade (default: true)
 # metadata (default: {})
 variable "node_pool" {
-  type        = "map"
-  default     = {}
+  type        = "list"
+  default     = []
   description = "Node pool setting to create"
 }
 
@@ -142,4 +142,9 @@ variable "master_ipv4_cidr_block" {
 
 variable "cluster_secondary_range_name" {}
 variable "services_secondary_range_name" {}
-
+variable "env" {
+  type = "string"
+}
+variable "cluster_key" {
+  type = "string"
+}
