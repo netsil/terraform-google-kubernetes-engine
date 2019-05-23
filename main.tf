@@ -137,7 +137,7 @@ resource "google_container_cluster" "new_container_cluster" {
     disk_type       = "${lookup(var.node_pool[count.index], "disk_type", "pd-standard")}"
     image_type      = "${lookup(var.node_pool[count.index], "image", "COS")}"
     local_ssd_count = "${lookup(var.node_pool[count.index], "local_ssd_count", 0)}"
-    machine_type    = "${lookup(var.node_pool[count.index], "machine_type", "n1-standard-1")}"
+    machine_type    = "${lookup(var.default_node_pool, "machine_type", "n1-standard-1")}"
     # min_cpu_platform - disable (useless)
 
     # BUG Provider - recreate loop
