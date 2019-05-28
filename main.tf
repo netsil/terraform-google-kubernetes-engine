@@ -26,7 +26,7 @@ resource "google_container_node_pool" "new_container_cluster_node_pool" {
   node_config {
     disk_size_gb    = "${lookup(var.node_pool[count.index], "disk_size_gb", 10)}"
     disk_type       = "${lookup(var.node_pool[count.index], "disk_type", "pd-standard")}"
-    image_type      = "${lookup(var.node_pool[count.index], "image", "COS")}"
+    image_type      = "${lookup(var.node_pool[count.index], "image_type", "COS")}"
     local_ssd_count = "${lookup(var.node_pool[count.index], "local_ssd_count", 0)}"
     machine_type = "${lookup(var.node_pool[count.index], "machine_type", "n1-standard-1")}"
     oauth_scopes    = "${split(",",lookup(var.node_pool[count.index], "oauth_scopes", "https://www.googleapis.com/auth/compute,https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring"))}"
@@ -135,7 +135,7 @@ resource "google_container_cluster" "new_container_cluster" {
   node_config {
     disk_size_gb    = "${lookup(var.node_pool[count.index], "disk_size_gb", 10)}"
     disk_type       = "${lookup(var.node_pool[count.index], "disk_type", "pd-standard")}"
-    image_type      = "${lookup(var.node_pool[count.index], "image", "COS")}"
+    image_type      = "${lookup(var.default_node_pool, "image_type", "COS")}"
     local_ssd_count = "${lookup(var.default_node_pool,"local_ssd_count", 0)}"
     machine_type    = "${lookup(var.default_node_pool, "machine_type", "n1-standard-1")}"
     # min_cpu_platform - disable (useless)
