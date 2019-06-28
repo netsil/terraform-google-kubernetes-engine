@@ -34,7 +34,7 @@ resource "google_container_node_pool" "new_container_cluster_node_pool" {
     service_account = "${lookup(var.node_pool[count.index], "service_account", "default")}"
     labels          = "${var.labels}"
     tags            = "${var.tags}"
-    metadata        = "${element(lookup(var.node_pool[count.index], "metadata", []), 0)}"
+    metadata        = "${count.index == 0 ? var.node_pool_blue_metadata : var.node_pool_green_metadata}"
   }
 
   #autoscaling {
