@@ -149,5 +149,5 @@ variable "cluster_key" {
   type = "string"
 }
 
-variable "node_pool_blue_metadata" {}
-variable "node_pool_green_metadata" {}
+variable "node_pool_blue_metadata" { type = "map" }
+variable "node_pool_green_metadata" { type = "map" }
