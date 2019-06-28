@@ -12,6 +12,11 @@ data "google_container_engine_versions" "region" {
   region = "${var.general["region"]}"
 }
 
+data "template_file" "node_pool_metadata" {
+  template = "${lookup(var.node_pool[count.index])}"
+  count = "${length(var.node_pool)}"
+}
+
 # Manages a Node Pool resource within GKE
 # https://www.terraform.io/docs/providers/google/r/container_node_pool.html
 resource "google_container_node_pool" "new_container_cluster_node_pool" {
@@ -34,7 +39,7 @@ resource "google_container_node_pool" "new_container_cluster_node_pool" {
     service_account = "${lookup(var.node_pool[count.index], "service_account", "default")}"
     labels          = "${var.labels}"
     tags            = "${var.tags}"
-    metadata        = "${lookup(var.node_pool[count.index]["node_pool_metadata"])}"
+    metadata        = "${data.template_file["node_pool_metadata"]}"
 #    metadata        =  "${element(split(",", lookup(var.node_pool[count.index], "node_pool_metadata", "")), 0)}"
   }
 
