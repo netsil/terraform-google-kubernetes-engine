@@ -84,8 +84,7 @@ variable "labels" {
   default     = {}
 }
 
-variable "node_pool_blue_metadata" { default = {} }
-variable "node_pool_green_metadata" { default = {} }
+variable "node_pool_metadata" { default = {} }
 # https://www.terraform.io/docs/providers/google/r/container_cluster.html#metadata
 variable "metadata" {
   description = "The metadata key/value pairs assigned to instances in the cluster"
