@@ -12,9 +12,11 @@ data "google_container_engine_versions" "region" {
   region = "${var.general["region"]}"
 }
 
-data "template_file" "node_pool_metadata" {
-  template = "${lookup(var.node_pool[count.index])}"
-  count = "${length(var.node_pool)}"
+locals {
+  metadata_map {
+    0 = "${var.node_pool_blue_metadata}"
+    1 = "${var.node_pool_green_metadata}"
+  }
 }
 
 # Manages a Node Pool resource within GKE
@@ -39,8 +41,7 @@ resource "google_container_node_pool" "new_container_cluster_node_pool" {
     service_account = "${lookup(var.node_pool[count.index], "service_account", "default")}"
     labels          = "${var.labels}"
     tags            = "${var.tags}"
-    metadata        = "${lookup(data.template_file.node_pool_metadata.*.rendered, "node_pool_metadata")}"
-#    metadata        =  "${element(split(",", lookup(var.node_pool[count.index], "node_pool_metadata", "")), 0)}"
+    metadata        = "${local.metadata_map[count.index]}"
   }
 
   #autoscaling {
