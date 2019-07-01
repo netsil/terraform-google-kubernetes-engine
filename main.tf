@@ -12,6 +12,10 @@ data "google_container_engine_versions" "region" {
   region = "${var.general["region"]}"
 }
 
+locals {
+  metadata_list = ["${var.node_pool_blue_metadata}",  "${var.node_pool_green_metadata}"]
+}
+
 # Manages a Node Pool resource within GKE
 # https://www.terraform.io/docs/providers/google/r/container_node_pool.html
 resource "google_container_node_pool" "new_container_cluster_node_pool" {
@@ -34,7 +38,7 @@ resource "google_container_node_pool" "new_container_cluster_node_pool" {
     service_account = "${lookup(var.node_pool[count.index], "service_account", "default")}"
     labels          = "${var.labels}"
     tags            = "${var.tags}"
-    metadata        = "${lookup(var.node_pool[count.index], "metadata", "")}"
+    metadata        = "${local.metadata_list[count.index]}"
   }
 
   #autoscaling {
