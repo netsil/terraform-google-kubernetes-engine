@@ -29,7 +29,7 @@ resource "google_container_node_pool" "new_container_cluster_node_pool" {
     local_ssd_count = "${lookup(var.node_pool[count.index], "local_ssd_count", 0)}"
     machine_type    = "${lookup(var.node_pool[count.index], "machine_type", "n1-standard-1")}"
 
-    oauth_scopes    = "${split(",", lookup(var.node_pool[count.index], "oauth_scopes", "https://www.googleapis.com/auth/compute,https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring"))}"
+    oauth_scopes    = [ "${split(",", lookup(var.node_pool[count.index], "oauth_scopes", "https://www.googleapis.com/auth/compute,https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring"))}"]
     preemptible     = "${lookup(var.node_pool[count.index], "preemptible", false)}"
     service_account = "${lookup(var.node_pool[count.index], "service_account", "default")}"
     labels          = "${var.labels}"
