@@ -27,6 +27,9 @@ resource "google_container_node_pool" "new_container_cluster_node_pool" {
   region     = "${var.general["region"]}"
   cluster    = "${google_container_cluster.new_container_cluster.name}"
   version    = "${lookup(var.node_pool[count.index], "node_version")}"
+  node_locations = [
+    "us-west1-b",
+  ]
   node_config {
     disk_size_gb    = "${lookup(var.node_pool[count.index], "disk_size_gb", 10)}"
     disk_type       = "${lookup(var.node_pool[count.index], "disk_type", "pd-standard")}"
