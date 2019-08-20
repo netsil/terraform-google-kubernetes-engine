@@ -17,6 +17,10 @@ variable "general" {
   description = "Global parameters"
 }
 
+variable "node_zones" {
+  type = "list"
+}
+
 # Parameters authorized:
 # network (default: default)
 # subnetwork (default: default)
