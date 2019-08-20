@@ -71,6 +71,7 @@ resource "google_container_cluster" "new_container_cluster" {
   network                  = "${lookup(var.master, "network", "default")}"
   subnetwork               = "${lookup(var.master, "subnetwork", "default")}"
   # additional_zones         = ["${var.node_additional_zones}"]
+  node_locations           =  "${var.node_zones}"
   initial_node_count       = "${lookup(var.default_node_pool, "node_count", 2)}"
   remove_default_node_pool = "${lookup(var.default_node_pool, "remove", false)}"
   resource_labels =  {
