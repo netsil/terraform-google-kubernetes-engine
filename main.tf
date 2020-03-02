@@ -64,6 +64,8 @@ resource "google_container_cluster" "new_container_cluster" {
   name        = "${local.name_prefix}-${var.general["region"]}-master"
   description = "Kubernetes ${var.general["name"]} in ${var.general["region"]}"
 
+  count    =  "${length(var.node_pool)}"
+
   # Using region instead of zone
   # zone        = "${var.general["zone"]}"
   region        = "${var.general["region"]}"
