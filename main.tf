@@ -64,8 +64,6 @@ resource "google_container_cluster" "new_container_cluster" {
   name        = "${local.name_prefix}-${var.general["region"]}-master"
   description = "Kubernetes ${var.general["name"]} in ${var.general["region"]}"
 
-  count    =  "${length(var.node_pool)}"
-
   # Using region instead of zone
   # zone        = "${var.general["zone"]}"
   region        = "${var.general["region"]}"
@@ -140,8 +138,8 @@ resource "google_container_cluster" "new_container_cluster" {
   }
 
   node_config {
-    disk_size_gb    = "${lookup(var.node_pool[count.index], "disk_size_gb", 10)}"
-    disk_type       = "${lookup(var.node_pool[count.index], "disk_type", "pd-standard")}"
+    disk_size_gb    = "${lookup(var.node_pool[0], "disk_size_gb", 10)}"
+    disk_type       = "${lookup(var.node_pool[0], "disk_type", "pd-standard")}"
     image_type      = "${lookup(var.default_node_pool, "image_type", "COS")}"
     local_ssd_count = "${lookup(var.default_node_pool,"local_ssd_count", 0)}"
     machine_type    = "${lookup(var.default_node_pool, "machine_type", "n1-standard-1")}"
@@ -153,9 +151,9 @@ resource "google_container_cluster" "new_container_cluster" {
     #   type  = "${lookup(var.master, "gpus_type", "nvidia-tesla-k80")}"
     # }
 
-    oauth_scopes    = "${split(",", lookup(var.node_pool[count.index], "oauth_scopes", "https://www.googleapis.com/auth/compute,https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring"))}"
-    preemptible     = "${lookup(var.node_pool[count.index], "preemptible", false)}"
-    service_account = "${lookup(var.node_pool[count.index], "service_account", "default")}"
+    oauth_scopes    = "${split(",", lookup(var.node_pool[0], "oauth_scopes", "https://www.googleapis.com/auth/compute,https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring"))}"
+    preemptible     = "${lookup(var.node_pool[0], "preemptible", false)}"
+    service_account = "${lookup(var.node_pool[0], "service_account", "default")}"
     labels          = "${var.labels}"
     tags            = "${var.tags}"
     metadata        = "${var.metadata}"
