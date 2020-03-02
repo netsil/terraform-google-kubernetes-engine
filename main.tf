@@ -160,6 +160,6 @@ resource "google_container_cluster" "new_container_cluster" {
   }
 
   lifecycle {
-    "ignore_changes" = ["node_version"]
+    ignore_changes = ["node_version"]
   }
 }
