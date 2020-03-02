@@ -121,7 +121,7 @@ resource "google_container_cluster" "new_container_cluster" {
   
   # master_authorized_networks_config - disable (security)
   master_authorized_networks_config {
-    cidr_blocks = [
+    cidr_blocks [
       {
         cidr_block = "${var.master_authorized_cidr_block}",
         display_name = "${var.master_authorized_cidr_name}"
@@ -134,7 +134,7 @@ resource "google_container_cluster" "new_container_cluster" {
   monitoring_service = "${lookup(var.master, "monitoring_service", "monitoring.googleapis.com")}"
   logging_service    = "${lookup(var.master, "logging_service", "logging.googleapis.com")}"
   
-  private_cluster_config = {
+  private_cluster_config {
     enable_private_nodes   = "${var.enable_private_nodes}"
     master_ipv4_cidr_block = "${var.master_ipv4_cidr_block}"
   }
@@ -153,7 +153,7 @@ resource "google_container_cluster" "new_container_cluster" {
     #   type  = "${lookup(var.master, "gpus_type", "nvidia-tesla-k80")}"
     # }
 
-    oauth_scopes    = ["${split(",", lookup(var.node_pool[count.index], "oauth_scopes", "https://www.googleapis.com/auth/compute,https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring"))}"]
+    oauth_scopes    = "${split(",", lookup(var.node_pool[count.index], "oauth_scopes", "https://www.googleapis.com/auth/compute,https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring"))}"
     preemptible     = "${lookup(var.node_pool[count.index], "preemptible", false)}"
     service_account = "${lookup(var.node_pool[count.index], "service_account", "default")}"
     labels          = "${var.labels}"
