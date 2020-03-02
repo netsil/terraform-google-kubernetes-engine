@@ -121,12 +121,11 @@ resource "google_container_cluster" "new_container_cluster" {
   
   # master_authorized_networks_config - disable (security)
   master_authorized_networks_config {
-    cidr_blocks [
-      {
+    cidr_blocks {
         cidr_block = "${var.master_authorized_cidr_block}",
         display_name = "${var.master_authorized_cidr_name}"
-      }
-    ]
+    }
+    
   }
 
   min_master_version = "${lookup(var.master, "version", data.google_container_engine_versions.region.latest_master_version)}"
