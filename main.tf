@@ -9,7 +9,7 @@ data "google_container_registry_repository" "registry" {}
 # Provides access to available Google Container Engine versions in a zone for a given project.
 # https://www.terraform.io/docs/providers/google/d/google_container_engine_versions.html
 data "google_container_engine_versions" "region" {
-  region = "${var.general["region"]}"
+  location = "${var.general["region"]}"
 }
 
 locals {
@@ -24,7 +24,7 @@ resource "google_container_node_pool" "new_container_cluster_node_pool" {
   node_count = "${lookup(var.node_pool[count.index], "node_count", 10)}"
 
   name       = "${local.name_prefix}-${var.general["region"]}-pool-${count.index}"
-  region     = "${var.general["region"]}"
+  location     = "${var.general["region"]}"
   cluster    = "${google_container_cluster.new_container_cluster.name}"
   version    = "${lookup(var.node_pool[count.index], "node_version")}"
   node_config {
@@ -66,7 +66,7 @@ resource "google_container_cluster" "new_container_cluster" {
 
   # Using region instead of zone
   # zone        = "${var.general["zone"]}"
-  region        = "${var.general["region"]}"
+  location        = "${var.general["region"]}"
 
   network                  = "${lookup(var.master, "network", "default")}"
   subnetwork               = "${lookup(var.master, "subnetwork", "default")}"
@@ -85,10 +85,6 @@ resource "google_container_cluster" "new_container_cluster" {
 
     http_load_balancing {
       disabled = "${lookup(var.master, "disable_http_load_balancing", false)}"
-    }
-
-    kubernetes_dashboard {
-      disabled = "${lookup(var.master, "disable_kubernetes_dashboard", false)}"
     }
 
     network_policy_config {
@@ -119,12 +115,11 @@ resource "google_container_cluster" "new_container_cluster" {
   
   # master_authorized_networks_config - disable (security)
   master_authorized_networks_config {
-    cidr_blocks = [
-      {
-        cidr_block = "${var.master_authorized_cidr_block}",
+    cidr_blocks {
+        cidr_block = "${var.master_authorized_cidr_block}"
         display_name = "${var.master_authorized_cidr_name}"
-      }
-    ]
+    }
+    
   }
 
   min_master_version = "${lookup(var.master, "version", data.google_container_engine_versions.region.latest_master_version)}"
@@ -132,14 +127,15 @@ resource "google_container_cluster" "new_container_cluster" {
   monitoring_service = "${lookup(var.master, "monitoring_service", "monitoring.googleapis.com")}"
   logging_service    = "${lookup(var.master, "logging_service", "logging.googleapis.com")}"
   
-  private_cluster_config = {
+  private_cluster_config {
+    enable_private_endpoint = "${var.enable_private_endpoint}"
     enable_private_nodes   = "${var.enable_private_nodes}"
     master_ipv4_cidr_block = "${var.master_ipv4_cidr_block}"
   }
 
   node_config {
-    disk_size_gb    = "${lookup(var.node_pool[count.index], "disk_size_gb", 10)}"
-    disk_type       = "${lookup(var.node_pool[count.index], "disk_type", "pd-standard")}"
+    disk_size_gb    = "${lookup(var.node_pool[0], "disk_size_gb", 10)}"
+    disk_type       = "${lookup(var.node_pool[0], "disk_type", "pd-standard")}"
     image_type      = "${lookup(var.default_node_pool, "image_type", "COS")}"
     local_ssd_count = "${lookup(var.default_node_pool,"local_ssd_count", 0)}"
     machine_type    = "${lookup(var.default_node_pool, "machine_type", "n1-standard-1")}"
@@ -151,9 +147,9 @@ resource "google_container_cluster" "new_container_cluster" {
     #   type  = "${lookup(var.master, "gpus_type", "nvidia-tesla-k80")}"
     # }
 
-    oauth_scopes    = ["${split(",", lookup(var.node_pool[count.index], "oauth_scopes", "https://www.googleapis.com/auth/compute,https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring"))}"]
-    preemptible     = "${lookup(var.node_pool[count.index], "preemptible", false)}"
-    service_account = "${lookup(var.node_pool[count.index], "service_account", "default")}"
+    oauth_scopes    = "${split(",", lookup(var.node_pool[0], "oauth_scopes", "https://www.googleapis.com/auth/compute,https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring"))}"
+    preemptible     = "${lookup(var.node_pool[0], "preemptible", false)}"
+    service_account = "${lookup(var.node_pool[0], "service_account", "default")}"
     labels          = "${var.labels}"
     tags            = "${var.tags}"
     metadata        = "${var.metadata}"
