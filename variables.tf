@@ -122,7 +122,7 @@ variable "master_authorized_cidr_name" {
 
 variable "master_authorized_cidr_block" {
   type        = "list"
-  default     = ""
+#  default     = ""
   description = "Authorized CIDR block"
 }
 
