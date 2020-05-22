@@ -66,7 +66,7 @@ resource "google_container_cluster" "new_container_cluster" {
 
   # Using region instead of zone
   # zone        = "${var.general["zone"]}"
-  region        = "${var.general["region"]}"
+  location       = "${var.general["region"]}"
 
   network                  = "${lookup(var.master, "network", "default")}"
   subnetwork               = "${lookup(var.master, "subnetwork", "default")}"
