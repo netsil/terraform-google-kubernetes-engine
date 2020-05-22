@@ -9,7 +9,7 @@ data "google_container_registry_repository" "registry" {}
 # Provides access to available Google Container Engine versions in a zone for a given project.
 # https://www.terraform.io/docs/providers/google/d/google_container_engine_versions.html
 data "google_container_engine_versions" "region" {
-  region = "${var.general["region"]}"
+  location = "${var.general["region"]}"
 }
 
 locals {
@@ -77,7 +77,7 @@ resource "google_container_cluster" "new_container_cluster" {
   resource_labels =  {
     env         = "${var.env}"
     cluster_key = "${var.cluster_key}"
-  }  
+  }
   addons_config {
     horizontal_pod_autoscaling {
       disabled = "${lookup(var.master, "disable_horizontal_pod_autoscaling", false)}"
@@ -87,16 +87,16 @@ resource "google_container_cluster" "new_container_cluster" {
       disabled = "${lookup(var.master, "disable_http_load_balancing", false)}"
     }
 
-    kubernetes_dashboard {
-      disabled = "${lookup(var.master, "disable_kubernetes_dashboard", false)}"
-    }
+    # kubernetes_dashboard {
+    #   disabled = "${lookup(var.master, "disable_kubernetes_dashboard", false)}"
+    # }
 
     network_policy_config {
       disabled = "${lookup(var.master, "disable_network_policy_config", true)}"
     }
   }
-  
-  # cluster_ipv4_cidr - default 
+
+  # cluster_ipv4_cidr - default
   enable_kubernetes_alpha = "${lookup(var.master, "enable_kubernetes_alpha", false)}"
   enable_legacy_abac      = "${lookup(var.master, "enable_legacy_abac", false)}"
 
@@ -105,7 +105,7 @@ resource "google_container_cluster" "new_container_cluster" {
     services_secondary_range_name = "${var.services_secondary_range_name}"
   }
 
-  
+
   maintenance_policy {
     daily_maintenance_window {
       start_time = "${lookup(var.master, "maintenance_window", "04:30")}"
@@ -116,7 +116,7 @@ resource "google_container_cluster" "new_container_cluster" {
     username = ""
     password = ""
   }
-  
+
   # master_authorized_networks_config - disable (security)
   master_authorized_networks_config {
     cidr_blocks = [
@@ -131,7 +131,7 @@ resource "google_container_cluster" "new_container_cluster" {
   #node_version       = "${lookup(var.master, "version", data.google_container_engine_versions.region.latest_node_version)}"
   monitoring_service = "${lookup(var.master, "monitoring_service", "monitoring.googleapis.com")}"
   logging_service    = "${lookup(var.master, "logging_service", "logging.googleapis.com")}"
-  
+
   private_cluster_config = {
     enable_private_nodes   = "${var.enable_private_nodes}"
     master_ipv4_cidr_block = "${var.master_ipv4_cidr_block}"
