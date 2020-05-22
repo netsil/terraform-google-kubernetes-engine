@@ -134,7 +134,7 @@ variable "enable_private_nodes" {
 
 variable "enable_private_endpoint" {
   type = "string"
-  default = "true"
+  default = "false"
   description = "Whether nodes have private endpoint enabled"
 }
 
