@@ -24,7 +24,7 @@ resource "google_container_node_pool" "new_container_cluster_node_pool" {
   node_count = "${lookup(var.node_pool[count.index], "node_count", 10)}"
 
   name       = "${local.name_prefix}-${var.general["region"]}-pool-${count.index}"
-  region     = "${var.general["region"]}"
+  location     = "${var.general["region"]}"
   cluster    = "${google_container_cluster.new_container_cluster.name}"
   version    = "${lookup(var.node_pool[count.index], "node_version")}"
   node_config {
