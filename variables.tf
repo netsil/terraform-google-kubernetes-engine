@@ -132,6 +132,12 @@ variable "enable_private_nodes" {
   description = "Whether nodes have internal IP addresses only"
 }
 
+variable "enable_private_endpoint" {
+  type = "string"
+  default = "true"
+  description = "Whether nodes have private endpoint enabled"
+}
+
 variable "master_ipv4_cidr_block" {
   type        = "string"
   default     = ""
